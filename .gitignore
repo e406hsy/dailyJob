@@ -160,8 +160,7 @@ cython_debug/
 #.idea/
 
 # private config
-dailyJob/config/*
-dailyJob/config
+config/*
 
 .idea
 chromedriver.exe
