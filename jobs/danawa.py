@@ -3,7 +3,8 @@ import os
 import time
 
 from selenium import webdriver
-from selenium.common.exceptions import NoAlertPresentException, TimeoutException
+from selenium.common.exceptions import NoAlertPresentException, TimeoutException, NoSuchElementException, \
+    ElementClickInterceptedException, ElementNotInteractableException, UnexpectedAlertPresentException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,6 +15,7 @@ EVENT_LIST_URL = 'https://event.danawa.com/event/lists?status=1&realType=3&pageN
 ROULETTE_URL = 'https://promotion.gmarket.co.kr/Event/AttendRoulette_none.asp'
 BENEFIT_URL = 'https://promotion.gmarket.co.kr/Event/pluszone.asp'
 
+# TODO: refactoring using OOP
 
 def run(path):
     with open(os.path.join(os.path.dirname(__file__), '..', 'config', '.danawa.json')) as f:
@@ -49,6 +51,7 @@ def run(path):
 
         lotto_url = ''
         roulette_urls = []
+        failed_urls = []
 
         for page in range(1, len(pagenation_buttons) + 1):
             driver.get(url=EVENT_LIST_URL + str(page))
@@ -124,9 +127,15 @@ def run(path):
             driver.get(roulette_url)
             current_window_handle = driver.current_window_handle
 
-            roulette_join_button = WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, '#roulette-event-join'))
-            )
+            try:
+                roulette_join_button = WebDriverWait(driver, 5).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '#roulette-event-join'))
+                )
+            except TimeoutException as e:
+                print('failed to find roulette button on page ' + roulette_url)
+                failed_urls.append(roulette_url)
+                continue
+
             driver.switch_to.window(current_window_handle)
 
             roulette_join_count = 0
@@ -149,37 +158,46 @@ def run(path):
                     time.sleep(2)
                     pass
 
-        # print(pagenation_button)
-        # pagenation_button.click()
-        # time.sleep(1)
-        # try:
-        #     alert = driver.switch_to.alert
-        #     print(alert.text)
-        #     alert.accept()
-        # except NoAlertPresentException as e:
-        #     pass
-        #
-        # # phase 3
-        # driver.get(url=BENEFIT_URL)
-        # time.sleep(1)
-        #
-        # WebDriverWait(driver, 3).until(
-        #     EC.presence_of_element_located((By.ID, 'footer'))
-        # )
-        #
-        # additional_benefits = driver.find_elements_by_css_selector('div.attendance_benefit a')
-        #
-        # for benefit_button in additional_benefits:
-        #     print(benefit_button)
-        #
-        #     benefit_button.click()
-        #     time.sleep(1)
-        #     try:
-        #         alert = driver.switch_to.alert
-        #         print(alert.text)
-        #         alert.accept()
-        #     except NoAlertPresentException as e:
-        #         pass
+        for roulette_url in failed_urls:
+
+            print(roulette_url)
+            driver.get(roulette_url)
+            current_window_handle = driver.current_window_handle
+
+            try:
+                roulette_join_button = WebDriverWait(driver, 5).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '.imgBtn.btn-game-page'))
+                )
+            except TimeoutException as e:
+                print('failed to find croc button on page ' + roulette_url)
+                failed_urls.append(roulette_url)
+                continue
+
+            driver.switch_to.window(current_window_handle)
+            try:
+                roulette_join_button.click()
+                time.sleep(2)
+                driver.find_element_by_id('agreePrivacy1').click()
+                driver.find_element_by_id('agreeAnotherPrivacy3').click()
+                driver.find_element_by_id('btn-privacy-agree-confirm').click()
+                time.sleep(2)
+                alert = driver.switch_to.alert
+                print(alert.text)
+                alert.accept()
+            except UnexpectedAlertPresentException as e:
+                print(e.alert_text)
+                continue
+            except NoSuchElementException as e:
+                pass
+
+            for i in range(0, 3):
+                try:
+                    driver.find_element_by_id('tooth' + str(i)).click()
+                    time.sleep(2)
+                except ElementClickInterceptedException as e:
+                    pass
+                except ElementNotInteractableException as e:
+                    pass
 
     except Exception as e:
         print(type(e))
