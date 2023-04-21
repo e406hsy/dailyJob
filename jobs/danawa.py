@@ -51,7 +51,7 @@ def run(path):
 
         lotto_url = ''
         roulette_urls = []
-        failed_urls = []
+        croc_urls = []
 
         for page in range(1, len(pagenation_buttons) + 1):
             driver.get(url=EVENT_LIST_URL + str(page))
@@ -70,6 +70,8 @@ def run(path):
                     roulette_urls.append(url)
                 elif '로또' in event_page_button.text:
                     lotto_url = url
+                elif '악어' in event_page_button.text:
+                    croc_urls.append(url)
                 else:
                     print(f'[INFO] 미분류 이벤트 : {event_page_button.text}/{url}')
 
@@ -121,10 +123,10 @@ def run(path):
                 except TimeoutException as e:
                     driver.find_element_by_css_selector('span.win_prize.ico_win')
 
-        for roulette_url in roulette_urls:
+        for croc_url in roulette_urls:
 
-            print(roulette_url)
-            driver.get(roulette_url)
+            print(croc_url)
+            driver.get(croc_url)
             current_window_handle = driver.current_window_handle
 
             try:
@@ -132,8 +134,8 @@ def run(path):
                     EC.presence_of_element_located((By.CSS_SELECTOR, '#roulette-event-join'))
                 )
             except TimeoutException as e:
-                print('failed to find roulette button on page ' + roulette_url)
-                failed_urls.append(roulette_url)
+                print('failed to find roulette button on page ' + croc_url)
+                croc_urls.append(croc_url)
                 continue
 
             driver.switch_to.window(current_window_handle)
@@ -158,10 +160,10 @@ def run(path):
                     time.sleep(2)
                     pass
 
-        for roulette_url in failed_urls:
+        for croc_url in croc_urls:
 
-            print(roulette_url)
-            driver.get(roulette_url)
+            print(croc_url)
+            driver.get(croc_url)
             current_window_handle = driver.current_window_handle
 
             try:
@@ -169,8 +171,8 @@ def run(path):
                     EC.presence_of_element_located((By.CSS_SELECTOR, '.imgBtn.btn-game-page'))
                 )
             except TimeoutException as e:
-                print('failed to find croc button on page ' + roulette_url)
-                failed_urls.append(roulette_url)
+                print('failed to find croc button on page ' + croc_url)
+                croc_urls.append(croc_url)
                 continue
 
             driver.switch_to.window(current_window_handle)
