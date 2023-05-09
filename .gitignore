@@ -164,3 +164,4 @@ config/*
 
 .idea
 chromedriver.exe
+chromedriver

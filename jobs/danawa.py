@@ -15,6 +15,7 @@ EVENT_LIST_URL = 'https://event.danawa.com/event/lists?status=1&realType=3&pageN
 ROULETTE_URL = 'https://promotion.gmarket.co.kr/Event/AttendRoulette_none.asp'
 BENEFIT_URL = 'https://promotion.gmarket.co.kr/Event/pluszone.asp'
 
+
 # TODO: refactoring using OOP
 
 def run(path):
@@ -30,10 +31,10 @@ def run(path):
             EC.presence_of_element_located((By.CSS_SELECTOR, '#danawa-member-login-loginButton'))
         )
 
-        id_input_box = driver.find_element_by_css_selector('#danawa-member-login-input-id')
+        id_input_box = driver.find_element(by=By.CSS_SELECTOR, value='#danawa-member-login-input-id')
         id_input_box.send_keys(json_value['id'])
 
-        password_input_box = driver.find_element_by_css_selector('#danawa-member-login-input-pwd')
+        password_input_box = driver.find_element(by=By.CSS_SELECTOR, value='#danawa-member-login-input-pwd')
         password_input_box.send_keys(json_value['password'])
 
         password_input_box.send_keys(Keys.ENTER)
@@ -47,7 +48,7 @@ def run(path):
             EC.presence_of_element_located((By.CSS_SELECTOR, 'div.co_paginate li.now'))
         )
 
-        pagenation_buttons = driver.find_elements_by_css_selector('div.co_paginate li')
+        pagenation_buttons = driver.find_elements(by=By.CSS_SELECTOR, value='div.co_paginate li')
 
         lotto_url = ''
         roulette_urls = []
@@ -60,7 +61,7 @@ def run(path):
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'div.co_paginate li.now'))
             )
 
-            event_page_buttons = driver.find_elements_by_css_selector('table.list_tbl tbody tr td.title a.link_tit')
+            event_page_buttons = driver.find_elements(by=By.CSS_SELECTOR, value='table.list_tbl tbody tr td.title a.link_tit')
 
             for event_page_button in event_page_buttons:
                 print(event_page_button.text)
@@ -86,7 +87,7 @@ def run(path):
                     )
 
                     time.sleep(2)
-                    driver.find_element_by_id('btn-auto-lotto-number').click()
+                    driver.find_element(by=By.ID, value='btn-auto-lotto-number').click()
                     time.sleep(2)
                     try:
                         alert = driver.switch_to.alert
@@ -94,7 +95,7 @@ def run(path):
                         alert.accept()
                     except NoAlertPresentException as e:
                         pass
-                    driver.find_element_by_id('join-lotto-event').click()
+                    driver.find_element(by=By.ID, value='join-lotto-event').click()
                     time.sleep(2)
                     driver.switch_to.window(current_window_handle)
 
@@ -106,22 +107,23 @@ def run(path):
                         driver.switch_to.window(current_window_handle)
                     except NoAlertPresentException as e:
                         if len(driver.find_elements(By.ID, 'btn-join-point-event')) == 0:
-                            driver.find_element_by_id('agreePrivacy1').click()
-                            driver.find_element_by_id('agreeAnotherPrivacy3').click()
-                            driver.find_element_by_id('btn-privacy-agree-confirm').click()
+                            driver.find_element(by=By.ID, value='agreePrivacy1').click()
+                            driver.find_element(by=By.ID, value='agreeAnotherPrivacy3').click()
+                            driver.find_element(by=By.ID, value='btn-privacy-agree-confirm').click()
                             time.sleep(2)
                             alert = driver.switch_to.alert
                             alert.accept()
                             time.sleep(2)
-                            driver.find_element_by_id('btn-auto-lotto-number').click()
+                            driver.find_element(by=By.ID, value='btn-auto-lotto-number').click()
                             time.sleep(2)
-                            driver.find_element_by_id('join-lotto-event').click()
+                            driver.find_element(by=By.ID, value='join-lotto-event').click()
                             time.sleep(2)
                             alert = driver.switch_to.alert
                             print(alert.text)
                             alert.accept()
                 except TimeoutException as e:
-                    driver.find_element_by_css_selector('span.win_prize.ico_win')
+                    pass
+                    # driver.find_element_by_css_selector('span.win_prize.ico_win')
 
         for croc_url in roulette_urls:
 
@@ -154,9 +156,9 @@ def run(path):
                         roulette_join_count = 3
                         continue
 
-                    driver.find_element_by_id('agreePrivacy1').click()
-                    driver.find_element_by_id('agreeAnotherPrivacy3').click()
-                    driver.find_element_by_id('btn-privacy-agree-confirm').click()
+                    driver.find_element(by=By.ID, value='agreePrivacy1').click()
+                    driver.find_element(by=By.ID, value='agreeAnotherPrivacy3').click()
+                    driver.find_element(by=By.ID, value='btn-privacy-agree-confirm').click()
                     time.sleep(2)
                     pass
 
@@ -179,9 +181,9 @@ def run(path):
             try:
                 roulette_join_button.click()
                 time.sleep(2)
-                driver.find_element_by_id('agreePrivacy1').click()
-                driver.find_element_by_id('agreeAnotherPrivacy3').click()
-                driver.find_element_by_id('btn-privacy-agree-confirm').click()
+                driver.find_element(by=By.ID, value='agreePrivacy1').click()
+                driver.find_element(by=By.ID, value='agreeAnotherPrivacy3').click()
+                driver.find_element(by=By.ID, value='btn-privacy-agree-confirm').click()
                 time.sleep(2)
                 alert = driver.switch_to.alert
                 print(alert.text)
@@ -194,7 +196,7 @@ def run(path):
 
             for i in range(0, 3):
                 try:
-                    driver.find_element_by_id('tooth' + str(i)).click()
+                    driver.find_element(by=By.ID, value='tooth' + str(i)).click()
                     time.sleep(2)
                 except ElementClickInterceptedException as e:
                     pass
