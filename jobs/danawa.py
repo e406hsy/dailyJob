@@ -125,10 +125,10 @@ def run(path):
                     pass
                     # driver.find_element_by_css_selector('span.win_prize.ico_win')
 
-        for croc_url in roulette_urls:
+        for roulette_url in roulette_urls:
 
-            print(croc_url)
-            driver.get(croc_url)
+            print(roulette_url)
+            driver.get(roulette_url)
             current_window_handle = driver.current_window_handle
 
             try:
@@ -136,8 +136,8 @@ def run(path):
                     EC.presence_of_element_located((By.CSS_SELECTOR, '#roulette-event-join'))
                 )
             except TimeoutException as e:
-                print('failed to find roulette button on page ' + croc_url)
-                croc_urls.append(croc_url)
+                print('[DEBUG]failed to find roulette button on page ' + roulette_url)
+                croc_urls.append(roulette_url)
                 continue
 
             driver.switch_to.window(current_window_handle)
@@ -156,11 +156,14 @@ def run(path):
                         roulette_join_count = 3
                         continue
 
-                    driver.find_element(by=By.ID, value='agreePrivacy1').click()
-                    driver.find_element(by=By.ID, value='agreeAnotherPrivacy3').click()
-                    driver.find_element(by=By.ID, value='btn-privacy-agree-confirm').click()
-                    time.sleep(2)
-                    pass
+                    try:
+                        driver.find_element(by=By.ID, value='agreePrivacy1').click()
+                        driver.find_element(by=By.ID, value='agreeAnotherPrivacy3').click()
+                        driver.find_element(by=By.ID, value='btn-privacy-agree-confirm').click()
+                        time.sleep(2)
+                    except NoSuchElementException as e:
+                        print('[ERROR] no privacy check button found.')
+                        break
 
         for croc_url in croc_urls:
 
@@ -173,7 +176,7 @@ def run(path):
                     EC.presence_of_element_located((By.CSS_SELECTOR, '.imgBtn.btn-game-page'))
                 )
             except TimeoutException as e:
-                print('failed to find croc button on page ' + croc_url)
+                print('[WARN] failed to find croc button on page ' + croc_url)
                 croc_urls.append(croc_url)
                 continue
 
