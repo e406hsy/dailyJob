@@ -24,13 +24,13 @@ def run(path):
     try:
         # phase 1
         WebDriverWait(driver, 3).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'button.button_login'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, '#btn_memberLogin'))
         )
 
-        id_input_box = driver.find_element_by_css_selector('#id')
+        id_input_box = driver.find_element(By.CSS_SELECTOR,'#typeMemberInputId')
         id_input_box.send_keys(json_value['id'])
 
-        password_input_box = driver.find_element_by_css_selector('#pwd')
+        password_input_box = driver.find_element(By.CSS_SELECTOR,'#typeMemberInputPassword')
         password_input_box.send_keys(json_value['password'])
 
         password_input_box.send_keys(Keys.ENTER)
@@ -61,7 +61,7 @@ def run(path):
             EC.presence_of_element_located((By.ID, 'footer'))
         )
 
-        additional_benefits = driver.find_elements_by_css_selector('div.attendance_benefit a')
+        additional_benefits = driver.find_elements(By.CSS_SELECTOR,'div.attendance_benefit a')
 
         for benefit_button in additional_benefits:
             print(benefit_button)
