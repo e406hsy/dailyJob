@@ -192,8 +192,8 @@ def run(path):
                 print(alert.text)
                 alert.accept()
             except UnexpectedAlertPresentException as e:
-                print(e.alert_text)
-                continue
+                print('[WARN] Unexpected alert ' + e.alert_text)
+                pass
             except NoSuchElementException as e:
                 pass
 
