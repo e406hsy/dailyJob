@@ -1,11 +1,8 @@
-from jobs import  *
-import os
-
-PATH = os.path.join(os.path.dirname(__file__), 'chromedriver')
+from jobs import *
 
 if __name__ == '__main__':
     try:
-        gmarket.run(PATH)
+        gmarket.run()
     except Exception as e:
         print('gmarket error')
         print(type(e))
@@ -14,7 +11,7 @@ if __name__ == '__main__':
         print('gmarket done')
 
     try:
-        danawa.run(PATH)
+        danawa.run()
     except Exception as e:
         print('danawa error')
         print(type(e))

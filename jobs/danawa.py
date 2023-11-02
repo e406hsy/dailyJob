@@ -18,11 +18,11 @@ BENEFIT_URL = 'https://promotion.gmarket.co.kr/Event/pluszone.asp'
 
 # TODO: refactoring using OOP
 
-def run(path):
+def run():
     with open(os.path.join(os.path.dirname(__file__), '..', 'config', '.danawa.json')) as f:
         json_value = json.load(f)
 
-    driver = webdriver.Chrome(executable_path=path)
+    driver = webdriver.Chrome()
     driver.get(url=LOGIN_URL)
 
     try:
@@ -191,6 +191,8 @@ def run(path):
                 alert = driver.switch_to.alert
                 print(alert.text)
                 alert.accept()
+                time.sleep(2)
+                driver.find_element(by=By.CSS_SELECTOR, value='.imgBtn.btn-game-page').click()
             except UnexpectedAlertPresentException as e:
                 print('[WARN] Unexpected alert ' + e.alert_text)
                 pass
@@ -215,4 +217,4 @@ def run(path):
 
 
 if __name__ == '__main__':
-    run(os.path.join(os.path.dirname(__file__), '..', 'chromedriver'))
+    run()

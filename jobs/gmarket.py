@@ -14,11 +14,11 @@ ROULETTE_URL = 'https://promotion.gmarket.co.kr/Event/AttendRoulette_none.asp'
 BENEFIT_URL = 'https://promotion.gmarket.co.kr/Event/pluszone.asp'
 
 
-def run(path):
+def run():
     with open(os.path.join(os.path.dirname(__file__), '..', 'config', '.gmarket.json')) as f:
         json_value = json.load(f)
 
-    driver = webdriver.Chrome(executable_path=path)
+    driver = webdriver.Chrome()
     driver.get(url=LOGIN_URL)
 
     try:
@@ -84,4 +84,4 @@ def run(path):
 
 
 if __name__ == '__main__':
-    run(os.path.join(os.path.dirname(__file__), '..', 'chromedriver'))
+    run()
