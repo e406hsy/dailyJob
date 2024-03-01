@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import datetime as dt
 
 from selenium import webdriver
 from selenium.common.exceptions import NoAlertPresentException, TimeoutException, NoSuchElementException, \
@@ -11,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 LOGIN_URL = 'https://auth.danawa.com/login?url=http%3A%2F%2Fevent.danawa.com%2F'
-EVENT_LIST_URL = 'https://event.danawa.com/event/lists?status=1&realType=3&pageNum='
+EVENT_LIST_URL = 'https://event.danawa.com/event/lists?status=1&realType=3'
 ROULETTE_URL = 'https://promotion.gmarket.co.kr/Event/AttendRoulette_none.asp'
 BENEFIT_URL = 'https://promotion.gmarket.co.kr/Event/pluszone.asp'
 
@@ -42,7 +43,11 @@ def run():
 
         # phase 2
 
-        driver.get(url=EVENT_LIST_URL + '1')
+        today = dt.date.today()
+        start = (today - dt.timedelta(days=90)).strftime('%Y.%m.%d')
+        end = (today + dt.timedelta(days=90)).strftime('%Y.%m.%d')
+        event_list_full_url = EVENT_LIST_URL + '&eventStartDate=' + start + '&eventEndDate=' + end + '&pageNum='
+        driver.get(url=event_list_full_url + '1')
 
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'div.co_paginate li.now'))
@@ -55,7 +60,7 @@ def run():
         croc_urls = []
 
         for page in range(1, len(pagenation_buttons) + 1):
-            driver.get(url=EVENT_LIST_URL + str(page))
+            driver.get(url=event_list_full_url + str(page))
 
             WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'div.co_paginate li.now'))
