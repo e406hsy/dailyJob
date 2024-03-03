@@ -22,10 +22,10 @@ if __name__ == '__main__':
     try:
         danawa_check.run()
     except Exception as e:
-        print('danawa error')
+        print('danawa_check error')
         print(type(e))
         print(e)
     finally:
-        print('danawa done')
+        print('danawa_check done')
 
 
