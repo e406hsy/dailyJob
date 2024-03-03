@@ -1,1 +1,1 @@
-__all__ = ['gmarket', 'danawa']
+__all__ = ['gmarket', 'danawa', 'danawa_check']

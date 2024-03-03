@@ -19,4 +19,13 @@ if __name__ == '__main__':
     finally:
         print('danawa done')
 
+    try:
+        danawa_check.run()
+    except Exception as e:
+        print('danawa error')
+        print(type(e))
+        print(e)
+    finally:
+        print('danawa done')
+
 
