@@ -1,13 +1,14 @@
 import json
-import time
 import os
+import time
 
-from selenium import webdriver
 from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+from jobs.chrome import ChromeDriverLoader
 
 LOGIN_URL = 'https://signinssl.gmarket.co.kr/login/login?url=https://www.gmarket.co.kr/'
 ROULETTE_URL = 'https://promotion.gmarket.co.kr/Event/AttendRoulette_none.asp'
@@ -18,7 +19,7 @@ def run():
     with open(os.path.join(os.path.dirname(__file__), '..', 'config', '.gmarket.json')) as f:
         json_value = json.load(f)
 
-    driver = webdriver.Chrome()
+    driver = ChromeDriverLoader().get_driver()
     driver.get(url=LOGIN_URL)
 
     try:
