@@ -116,6 +116,7 @@ def run():
                         if len(driver.find_elements(By.ID, 'btn-join-point-event')) == 0:
                             driver.find_element(by=By.ID, value='agreePrivacy1').click()
                             driver.find_element(by=By.ID, value='agreeAnotherPrivacy3').click()
+                            driver.find_element(by=By.ID, value='agreedParticipationRestriction5').click()
                             driver.find_element(by=By.ID, value='btn-privacy-agree-confirm').click()
                             time.sleep(2)
                             alert = driver.switch_to.alert
@@ -166,6 +167,7 @@ def run():
                     try:
                         driver.find_element(by=By.ID, value='agreePrivacy1').click()
                         driver.find_element(by=By.ID, value='agreeAnotherPrivacy3').click()
+                        driver.find_element(by=By.ID, value='agreedParticipationRestriction5').click()
                         driver.find_element(by=By.ID, value='btn-privacy-agree-confirm').click()
                         time.sleep(2)
                     except NoSuchElementException as e:
@@ -194,6 +196,7 @@ def run():
                     time.sleep(2)
                     driver.find_element(by=By.ID, value='agreePrivacy1').click()
                     driver.find_element(by=By.ID, value='agreeAnotherPrivacy3').click()
+                    driver.find_element(by=By.ID, value='agreedParticipationRestriction5').click()
                     driver.find_element(by=By.ID, value='btn-privacy-agree-confirm').click()
                     time.sleep(2)
                     alert = driver.switch_to.alert
