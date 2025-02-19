@@ -10,14 +10,15 @@ if __name__ == '__main__':
     finally:
         print('gmarket done')
 
-    try:
-        danawa.run()
-    except Exception as e:
-        print('danawa error')
-        print(type(e))
-        print(e)
-    finally:
-        print('danawa done')
+    for i in range(3):
+        try:
+            danawa.run()
+        except Exception as e:
+            print('danawa error')
+            print(type(e))
+            print(e)
+        finally:
+            print('danawa done')
 
     try:
         danawa_check.run()
@@ -27,5 +28,3 @@ if __name__ == '__main__':
         print(e)
     finally:
         print('danawa_check done')
-
-

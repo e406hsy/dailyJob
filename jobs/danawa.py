@@ -83,6 +83,7 @@ def run():
                 else:
                     print(f'[INFO] 미분류 이벤트 : {event_page_button.text}/{url}')
 
+        current_window_handle = driver.current_window_handle
         if lotto_url != '':
             driver.get(url=lotto_url)
             current_window_handle = driver.current_window_handle
